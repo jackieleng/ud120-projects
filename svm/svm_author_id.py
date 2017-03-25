@@ -27,4 +27,21 @@ features_train, features_test, labels_train, labels_test = preprocess()
 
 #########################################################
 
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
 
+# Reduce data set size (less accuracy):
+# features_train = features_train[:len(features_train)/100]
+# labels_train = labels_train[:len(labels_train)/100]
+
+# clf = SVC(kernel='linear')
+clf = SVC(kernel='rbf', C=10000)
+
+t0 = time()
+clf.fit(features_train, labels_train)
+print("training time: %ss" % round(time() - t0, 3))
+t0 = time()
+preds = clf.predict(features_test)
+print("prediction time: %ss" % round(time() - t0, 3))
+acc = accuracy_score(preds, labels_test)
+print("accuracy: %s" % acc)

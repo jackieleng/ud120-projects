@@ -38,6 +38,10 @@ labels_train   = labels_train[:150]
 
 
 ### your code goes here
-
-
-
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+clf = DecisionTreeClassifier()
+clf.fit(features_train, labels_train)
+preds = clf.predict(features_test)
+acc = accuracy_score(labels_test, preds)
+print(acc)

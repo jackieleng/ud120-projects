@@ -8,7 +8,7 @@
 
 
 import pickle
-import numpy
+import numpy as np
 import matplotlib.pyplot as plt
 import sys
 sys.path.append("../tools/")
@@ -48,6 +48,7 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 = "total_payments"
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
@@ -56,7 +57,7 @@ poi, finance_features = targetFeatureSplit( data )
 
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
-### for f1, f2, _ in finance_features:
+# for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
 for f1, f2 in finance_features:
     plt.scatter( f1, f2 )
@@ -65,6 +66,29 @@ plt.show()
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
 
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+finance_features = scaler.fit_transform(finance_features)
+km = KMeans(n_clusters=2)
+km.fit(finance_features)
+pred = km.predict(finance_features)
+
+rescaled_answers = scaler.transform([[200000., 1000000.]])
+
+try:
+    finance_features_arr = np.array(finance_features)
+    exercised_stock = finance_features_arr[:, 1]
+    max_exercised_stock = np.max(exercised_stock)
+    stock_nonzeros = exercised_stock[exercised_stock > 0]
+    min_exercised_stock = np.min(stock_nonzeros)
+
+    salary = finance_features_arr[:, 0]
+    max_sal = np.max(salary)
+    sal_nonzeros = salary[salary > 0]
+    min_sal = np.min(sal_nonzeros)
+except:
+    pass
 
 
 

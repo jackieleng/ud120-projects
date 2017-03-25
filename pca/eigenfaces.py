@@ -68,6 +68,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 # dataset): unsupervised feature extraction / dimensionality reduction
 n_components = 150
 
+# best F1 score, F1 starts to drop with more or less components
+n_components = 100
+
 print "Extracting the top %d eigenfaces from %d faces" % (n_components, X_train.shape[0])
 t0 = time()
 pca = RandomizedPCA(n_components=n_components, whiten=True).fit(X_train)
